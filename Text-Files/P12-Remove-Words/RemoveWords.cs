@@ -12,35 +12,31 @@ class RemoveWords
 {
     static void Main()
     {
-
-        var sr = new StreamReader(@"..\..\TextFile1.txt");
-        var srList = new StreamReader(@"..\..\TextFile2.txt");
-        var sw = new StreamWriter(@"..\..\replaced.txt");
-       string[] list;
-        using (srList)
+        try
         {
-            string line = srList.ReadLine();
-            while(line!=null)
+            var sr = new StreamReader(@"..\..\TextFile1.txt");
+            var srList = new StreamReader(@"..\..\TextFile2.txt");
+            var sw = new StreamWriter(@"..\..\replaced.txt");
+            var list = new List<string>();
+            using (srList)
             {
-                list = line.Split(' ');
-                line = srList.ReadLine();
+
+                list = srList.ReadToEnd().Split(new char[] { ' ', ',', '.', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+
             }
+
+            RemoveWordsFromTxtFiles(sr, sw, list);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("{0}:{1}", ex.GetType().Name, ex.Message); 
         }
 
-        
-            RemoveWordsFromTxtFiles(sr, sw, list);
        
-            
-            
-        
-        
-
-
-
-
     }
 
-    private static void RemoveWordsFromTxtFiles(StreamReader sr, StreamWriter sw, string[]list)
+    private static void RemoveWordsFromTxtFiles(StreamReader sr, StreamWriter sw, List<string> list)
     {
 
         using (sr)
@@ -53,17 +49,13 @@ class RemoveWords
                 {
                     for (int i = line.IndexOf(word); i != -1; i = line.IndexOf(word, i + 1))
                     {
-                        bool isWords = (i - 1 < 0 || !char.IsLetter(line[i - 1])) && (i + 5 >= line.Length || !char.IsLetter(line[i + 5]));
+                        bool isWords = (i - 1 < 0 || !char.IsLetter(line[i - 1])) && (i + word.Length >= line.Length || !char.IsLetter(line[i + word.Length]));
                         if (isWords)
                         {
                             line = line.Replace(word, " ");
                         }
                     }
                 }
-                
-
-
-
                 sw.WriteLine(line);
                 line = sr.ReadLine();
 

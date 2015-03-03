@@ -56,7 +56,7 @@ class MaximalAreaSum
                     }
                 }
             }
-            Console.WriteLine("\nThe best sum is {0}",bestSum);
+            Console.WriteLine("\n\nThe best sum is {0}",bestSum);
             Console.WriteLine("\nThe best sum element 2x2\n{0,3}{1,3}\n{2,3}{3,3}",
             matrix[bestRow, bestCol], matrix[bestRow, bestCol + 1],
             matrix[bestRow + 1, bestCol], matrix[bestRow + 1, bestCol + 1]);
